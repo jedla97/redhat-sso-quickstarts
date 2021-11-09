@@ -16,8 +16,14 @@
  */
 package org.keycloak.quickstart.profilejee;
 
+import org.jboss.as.quickstarts.ejb.remote.stateless.RemoteCalculator;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Hashtable;
 
 /**
  * Controller simplifies access to the server environment from the JSP.
@@ -27,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Controller {
 
     public void handleLogout(HttpServletRequest req) throws ServletException {
+        (org.keycloak.adapters.saml.SamlPrincipal)req.getUserPrincipal();
         if (req.getParameter("logout") != null) {
             req.logout();
         }
@@ -35,5 +42,4 @@ public class Controller {
     public boolean isLoggedIn(HttpServletRequest req) {
         return req.getUserPrincipal() != null;
     }
-
 }

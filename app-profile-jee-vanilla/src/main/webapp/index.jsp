@@ -37,6 +37,7 @@
         <div class="wrapper" id="welcome">
             <div class="menu">
                 <button name="loginBtn" onclick="location.href = 'profile.jsp'" type="button">Login</button>
+        <button name="calcBtn" onclick="location.href = 'calc'" type="button">Calc</button>
             </div>
 
             <div class="content">

@@ -60,6 +60,12 @@
             <artifactId>arquillian-phantom-driver</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.eap.quickstarts</groupId>
+            <artifactId>ejb-remote-server-side</artifactId>
+            <version>7.4.0.Beta</version>
+        </dependency>
     </dependencies>
 
     <build>

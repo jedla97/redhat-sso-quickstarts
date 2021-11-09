@@ -30,6 +30,7 @@ limitations under the License.
 <div class="wrapper" id="profile">
     <div class="menu">
         <button name="logoutBtn" onclick="location.href = 'index.jsp?logout=true'" type="button">Logout</button>
+        <button name="calcBtn" onclick="location.href = 'calc'" type="button">Calc</button>
     </div>
 
     <div class="content">
