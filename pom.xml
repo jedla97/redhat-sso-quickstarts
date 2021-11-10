@@ -198,6 +198,7 @@
         <module>app-authz-uma-photoz</module>
         <module>app-authz-photoz</module>
         <module>authz-js-policies</module>
+        <module>ejb-remote</module>
     </modules>
  
     <repositories>

@@ -62,9 +62,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.eap.quickstarts</groupId>
+            <groupId>org.keycloak.quickstarts</groupId>
             <artifactId>ejb-remote-server-side</artifactId>
-            <version>7.4.0.Beta</version>
+            <version>7.4.0.GA</version>
         </dependency>
     </dependencies>
 

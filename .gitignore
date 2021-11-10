@@ -56,3 +56,5 @@ target
 ###########
 node_modules
 /app-angular2/src/main/webapp/node
+/ejb-remote/server-side/target/
+/ejb-remote/server-side/build.metadata

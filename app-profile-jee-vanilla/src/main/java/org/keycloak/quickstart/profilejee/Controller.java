@@ -33,7 +33,7 @@ import java.util.Hashtable;
 public class Controller {
 
     public void handleLogout(HttpServletRequest req) throws ServletException {
-        (org.keycloak.adapters.saml.SamlPrincipal)req.getUserPrincipal();
+        req.getUserPrincipal();
         if (req.getParameter("logout") != null) {
             req.logout();
         }
