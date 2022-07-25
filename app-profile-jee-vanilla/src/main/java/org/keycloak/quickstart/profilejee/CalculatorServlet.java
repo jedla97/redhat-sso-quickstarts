@@ -14,32 +14,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
+import java.util.Properties;
 
-@WebServlet(name = "Calculator", urlPatterns = {"/calc"})
+@WebServlet(name = "Calculator", urlPatterns = {"calc"})
 public class CalculatorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        // if logout was passed as a get parameter, perform the logout by invalidating the session.
-        if (request.getParameter("logout") != null)
-        {
-            request.getSession().invalidate();
-            response.sendRedirect("test");
-            return;
-        }
 
         String username = request.getRemoteUser();
         out.println("Hello " + username);
         out.println("Remote calling EJB that requires a SAML assertion credential...");
+
         try {
             invokeStatelessBean(out);
+            out.println("bean invoked");
         } catch (NamingException ex) {
             out.println("NamingException: " + ex.getMessage());
             out.close();
-            return;
         }
 //        Principal principal;
 //        try
@@ -106,13 +101,16 @@ public class CalculatorServlet extends HttpServlet {
 
     private static void invokeStatelessBean(PrintWriter out) throws NamingException {
         // Let's lookup the remote stateless calculator
-        final RemoteCalculator statelessRemoteCalculator = lookupRemoteStatelessCalculator();
-        /*System.*/out.println("Obtained a remote stateless calculator for invocation");
+        final RemoteCalculator statelessRemoteCalculator = lookupRemoteStatelessCalculator(out);
+        /*System.*/
+        out.println("Obtained a remote stateless calculator for invocation");
         // invoke on the remote calculator
         int a = 204;
         int b = 340;
-        /*System.*/out.println("Adding " + a + " and " + b + " via the remote stateless calculator deployed on the server");
-        int sum = statelessRemoteCalculator.add(a, b);
+        /*System.*/
+        int sum = 0;
+        out.println("Adding " + a + " and " + b + " via the remote stateless calculator deployed on the server");
+        sum = statelessRemoteCalculator.add(a, b);
         /*System.*/out.println("Remote calculator returned sum = " + sum);
         if (sum != a + b) {
             throw new RuntimeException("Remote stateless calculator returned an incorrect sum " + sum + " ,expected sum was "
@@ -139,38 +137,14 @@ public class CalculatorServlet extends HttpServlet {
      */
     private static final String HTTP = "http";
 
-    private static RemoteCalculator lookupRemoteStatelessCalculator() throws NamingException {
-        final Hashtable<String, String> jndiProperties = new Hashtable<String, String>();
+    private static RemoteCalculator lookupRemoteStatelessCalculator(PrintWriter out) throws NamingException {
+        final Hashtable<String, String> jndiProperties = new Hashtable<>();
+        //jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        if(Boolean.getBoolean(HTTP)) {
-            //use HTTP based invocation. Each invocation will be a HTTP request
-            jndiProperties.put(Context.PROVIDER_URL,"http://localhost:8280/wildfly-services");
-        } else {
-            //use HTTP upgrade, an initial upgrade requests is sent to upgrade to the remoting protocol
-            jndiProperties.put(Context.PROVIDER_URL,"remote+http://localhost:8280");
-        }
+        jndiProperties.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
         final Context context = new InitialContext(jndiProperties);
 
-        // The JNDI lookup name for a stateless session bean has the syntax of:
-        // ejb:<appName>/<moduleName>/<distinctName>/<beanName>!<viewClassName>
-        //
-        // <appName> The application name is the name of the EAR that the EJB is deployed in
-        // (without the .ear). If the EJB JAR is not deployed in an EAR then this is
-        // blank. The app name can also be specified in the EAR's application.xml
-        //
-        // <moduleName> By the default the module name is the name of the EJB JAR file (without the
-        // .jar suffix). The module name might be overridden in the ejb-jar.xml
-        //
-        // <distinctName> : EAP allows each deployment to have an (optional) distinct name.
-        // This example does not use this so leave it blank.
-        //
-        // <beanName> : The name of the session been to be invoked.
-        //
-        // <viewClassName>: The fully qualified classname of the remote interface. Must include
-        // the whole package name.
-
-        // let's do the lookup
-        return (RemoteCalculator) context.lookup("ejb:/ejb-remote-server-side/CalculatorBean!"
-                + RemoteCalculator.class.getName());
+        return (RemoteCalculator) context
+                .lookup("ejb:/vanilla/CalculatorBean!" + RemoteCalculator.class.getName());
     }
 }

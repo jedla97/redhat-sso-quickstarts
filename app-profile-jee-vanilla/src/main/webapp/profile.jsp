@@ -26,11 +26,14 @@ limitations under the License.
 </head>
 <body>
 <jsp:useBean id="controller" class="org.keycloak.quickstart.profilejee.Controller" scope="request"/>
+<jsp:useBean id="controller1" class="org.keycloak.quickstart.profilejee.CalculatorServlet" scope="request"/>
 
 <div class="wrapper" id="profile">
     <div class="menu">
         <button name="logoutBtn" onclick="location.href = 'index.jsp?logout=true'" type="button">Logout</button>
-        <button name="calcBtn" onclick="location.href = 'calc'" type="button">Calc</button>
+        <form action="calc" method="post" id="calcSubmit">
+        </form>
+        <button type="submit" form="calcSubmit" value="calc">calc</button>
     </div>
 
     <div class="content">

@@ -26,6 +26,7 @@
         <web-resource-collection>
             <web-resource-name>app-profile-jee</web-resource-name>
             <url-pattern>/profile.jsp</url-pattern>
+            <url-pattern>/calc</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>

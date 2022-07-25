@@ -16,9 +16,12 @@
  */
 package org.jboss.as.quickstarts.ejb.remote.stateless;
 
+import javax.annotation.security.PermitAll;
+
 /**
  * @author Jaikiran Pai
  */
+
 public interface RemoteCalculator {
 
     int add(int a, int b);

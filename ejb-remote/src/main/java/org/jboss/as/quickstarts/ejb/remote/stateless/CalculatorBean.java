@@ -16,19 +16,18 @@
  */
 package org.jboss.as.quickstarts.ejb.remote.stateless;
 
+import org.jboss.ejb3.annotation.SecurityDomain;
+
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-
-import org.jboss.ejb3.annotation.SecurityDomain;
 
 /**
  * @author Jaikiran Pai
  */
 @Stateless
 @Remote(RemoteCalculator.class)
-@RolesAllowed({ "saml-user-role" })
-@SecurityDomain("other")
 public class CalculatorBean implements RemoteCalculator {
 
     @Override
